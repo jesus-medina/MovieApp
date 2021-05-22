@@ -17,7 +17,7 @@ class MovieViewModel : ViewModel() {
         TODO("getMostPopularMovies is not implemented yet")
     }
 
-    fun getMovieById(id: String): UIMovie {
+    fun getMovieById(id: String): UIMovie.UIDetailedPopularMovie {
         TODO("getMovieById is not implemented yet")
     }
 
