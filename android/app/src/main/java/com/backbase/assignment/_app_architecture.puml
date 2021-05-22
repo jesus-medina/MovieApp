@@ -1,0 +1,173 @@
+@startuml
+
+left to right direction
+
+package com.backbase.assignment {
+
+package presentation {
+
+package ui {
+
+class MainActivity
+
+}
+
+package viewmodel {
+
+class MovieViewModel {
++ retrieveMovies()
++ getNowPlayingMovies(): StateFlow<List<UIMovie>>
++ getMostPopularMovies(): StateFlow<List<UIMovie>>
++ getMovieById(String): UIMovie
+}
+
+abstract class UIMovie {
++ posterImage: String
+}
+
+class UINowPlayingMovie extends UIMovie
+
+class UIMostPopularMovie extends UIMovie {
++ title: String
++ rating: Byte
++ duration: Int
++ releaseDate: Date
+}
+
+class UIDetailedMovie extends UIMostPopularMovie {
++ overview: String
++ genres: List<UIGenre>
+}
+
+}
+
+MainActivity -- MovieViewModel
+MovieViewModel -- UIMovie
+
+}
+
+package domain {
+
+package usecase {
+
+interface RetrieveMoviesUseCase {
++ invoke()
+}
+
+class RetrieveMoviesUseCaseImpl implements RetrieveMoviesUseCase
+
+interface GetNowPlayingMoviesUseCase {
++ invoke(): Flow<List<DomainNowPlayingMovie>>
+}
+
+class GetNowPlayingMoviesUseCaseImpl implements GetNowPlayingMoviesUseCase
+
+interface GetMostPopularMoviesUseCase {
++ invoke(): Flow<List<DomainMostPopularMovie>>
+}
+
+class GetMostPopularMoviesUseCaseImpl implements GetMostPopularMoviesUseCase
+
+interface GetMovieByIdUseCase {
++ invoke(String): DomainDetailedMovie
+}
+
+class GetMovieByIdUseCaseImpl implements GetMovieByIdUseCase
+
+MovieViewModel -- RetrieveMoviesUseCase
+MovieViewModel -- GetNowPlayingMoviesUseCase
+MovieViewModel -- GetMostPopularMoviesUseCase
+MovieViewModel -- GetMovieByIdUseCase
+
+}
+
+package repository {
+
+interface MovieRepository {
++ retrieveMovies()
++ getNowPlayingMovies(): Flow<List<DomainNowPlayingMovie>>
++ getMostPopularMovies(): Flow<List<DomainMostPopularMovie>>
++ getMovieById(String): DomainDetailedMovie
+}
+
+class MovieRepositoryImpl implements MovieRepository
+
+MovieRepository -- RetrieveMoviesUseCaseImpl
+MovieRepository -- GetNowPlayingMoviesUseCaseImpl
+MovieRepository -- GetMostPopularMoviesUseCaseImpl
+MovieRepository -- GetMovieByIdUseCaseImpl
+
+MovieRepository -R- DomainNowPlayingMovie
+MovieRepository -R- DomainMostPopularMovie
+MovieRepository -R- DomainDetailedMovie
+
+}
+
+abstract class DomainMovie {
++ posterImage: String
+}
+
+class DomainNowPlayingMovie extends DomainMovie
+
+class DomainMostPopularMovie extends DomainMovie {
++ title: String
++ rating: Byte
++ duration: Int
++ releaseDate: Date
+}
+
+class DomainDetailedMovie extends DomainMostPopularMovie {
++ overview: String
++ genres: List<DomainGenre>
+}
+
+}
+
+package data {
+
+package local {
+
+interface MovieLocalDataSource {
++ getNowPlayingMovies(): Flow<List<DataMovie>>
++ getMostPopularMovies(): Flow<List<DataMovie>>
++ getMovieById(String): DataMovie
+}
+
+}
+
+package remote {
+
+interface MovieRemoteDataSource {
++ retrieveMovies()
++ getMovieById(String): DataMovie
+}
+
+}
+
+MovieRepositoryImpl -- MovieLocalDataSource
+MovieRepositoryImpl -- MovieRemoteDataSource
+
+class DataMovie {
++ posterImage: String?
++ title: String?
++ rating: Byte?
++ duration: Int?
++ releaseDate: Date?
++ overview: String?
++ genres: List<DataGenre>
+}
+
+class DataGenre {
++ id: Int
++ name: String
+}
+
+DataMovie *-- DataGenre
+MovieRemoteDataSource -- DataMovie
+
+}
+
+}
+
+
+@enduml
