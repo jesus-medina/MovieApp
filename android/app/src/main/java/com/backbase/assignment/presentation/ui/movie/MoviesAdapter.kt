@@ -1,4 +1,4 @@
-package com.backbase.assignment.ui.movie
+package com.backbase.assignment.presentation.ui.movie
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.backbase.assignment.R
-import com.backbase.assignment.ui.custom.RatingView
+import com.backbase.assignment.presentation.ui.custom.RatingView
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 

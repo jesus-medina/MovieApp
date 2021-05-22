@@ -25,9 +25,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b147ab25-8b9a-42bb-b3bb-9fbe30e09571" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codestream.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codestream.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/presentation/UIGenre.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/presentation/UIMovie.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/presentation/viewmodel/MovieViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/_app_architecture.puml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/_app_architecture.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/ui/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/presentation/ui/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/ui/custom/RatingView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/presentation/ui/custom/RatingView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/ui/movie/MoviesAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/backbase/assignment/presentation/ui/movie/MoviesAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/layout/movie_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/layout/movie_item.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
