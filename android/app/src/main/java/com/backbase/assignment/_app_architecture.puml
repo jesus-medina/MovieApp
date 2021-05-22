@@ -21,6 +21,8 @@ class MovieViewModel {
 + getMovieById(String): UIMovie
 }
 
+}
+
 abstract class UIMovie {
 + posterImage: String
 }
@@ -39,7 +41,29 @@ class UIDetailedMovie extends UIMostPopularMovie {
 + genres: List<UIGenre>
 }
 
+enum UIGenre {
+Action
+Adventure
+Animation
+Comedy
+Crime
+Documentary
+Drama
+Family
+Fantasy
+History
+Horror
+Music
+Mystery
+Romance
+ScienceFiction
+TVMovie
+Thriller
+War
+Western
 }
+
+UIDetailedMovie *-- UIGenre
 
 MainActivity -- MovieViewModel
 MovieViewModel -- UIMovie
@@ -121,7 +145,29 @@ class DomainDetailedMovie extends DomainMostPopularMovie {
 + genres: List<DomainGenre>
 }
 
+enum DomainGenre {
+Action
+Adventure
+Animation
+Comedy
+Crime
+Documentary
+Drama
+Family
+Fantasy
+History
+Horror
+Music
+Mystery
+Romance
+ScienceFiction
+TVMovie
+Thriller
+War
+Western
 }
+
+DomainDetailedMovie *-- DomainGenre
 
 package data {
 
