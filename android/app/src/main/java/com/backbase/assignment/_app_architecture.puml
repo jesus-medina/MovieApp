@@ -4,215 +4,245 @@ left to right direction
 
 package com.backbase.assignment {
 
-package presentation {
+    package util {
+        interface Mapper <<I>>, <<O>> {
+            + map(I): O
+        }
 
-package ui {
+        interface ListMapper <<I>>, <<O>> implements Mapper {
+            + map(List<I>): List<O>
+        }
 
-class MainActivity
+        class ListMapperImpl <<I>>, <<O>> implements ListMapper {
+            + ListMapperImpl(Mapper<I, O>)
+        }
+    }
 
-}
+    package presentation.mapper {
+        interface DomainMovieToUIMovie implements Mapper {
+            + map(DomainMovie): UIMovie
+        }
 
-package viewmodel {
+        class DomainMovieToUIMovieImpl implements DomainMovieToUIMovie
+    }
 
-class MovieViewModel {
-+ retrieveMovies()
-+ getNowPlayingMovies(): StateFlow<List<UIMovie>>
-+ getMostPopularMovies(): StateFlow<List<UIMovie>>
-+ getMovieById(String): UIMovie
-}
+    package presentation {
 
-}
+        package ui {
 
-abstract class UIMovie {
-+ posterImage: String
-}
+            class MainActivity
+        }
 
-class UINowPlayingMovie extends UIMovie
+        package viewmodel {
 
-class UIMostPopularMovie extends UIMovie {
-+ title: String
-+ rating: Byte
-+ duration: Int
-+ releaseDate: Date
-}
+            class MovieViewModel {
+                + retrieveMovies()
+                + getNowPlayingMovies(): StateFlow<List<UIMovie>>
+                + getMostPopularMovies(): StateFlow<List<UIMovie>>
+                + getMovieById(String): UIMovie
+            }
 
-class UIDetailedMovie extends UIMostPopularMovie {
-+ overview: String
-+ genres: List<UIGenre>
-}
+            MovieViewModel -- DomainMovieToUIMovie
+        }
 
-enum UIGenre {
-Action
-Adventure
-Animation
-Comedy
-Crime
-Documentary
-Drama
-Family
-Fantasy
-History
-Horror
-Music
-Mystery
-Romance
-ScienceFiction
-TVMovie
-Thriller
-War
-Western
-}
+        abstract class UIMovie {
+            + posterImage: String
+        }
 
-UIDetailedMovie *-- UIGenre
+        class UINowPlayingMovie extends UIMovie
 
-MainActivity -- MovieViewModel
-MovieViewModel -- UIMovie
+        class UIMostPopularMovie extends UIMovie {
+            + title: String
+            + rating: Byte
+            + duration: Int
+            + releaseDate: Date
+        }
 
-}
+        class UIDetailedMovie extends UIMostPopularMovie {
+            + overview: String
+            + genres: List<UIGenre>
+        }
 
-package domain {
+        enum UIGenre {
+            Action
+            Adventure
+            Animation
+            Comedy
+            Crime
+            Documentary
+            Drama
+            Family
+            Fantasy
+            History
+            Horror
+            Music
+            Mystery
+            Romance
+            ScienceFiction
+            TVMovie
+            Thriller
+            War
+            Western
+        }
 
-package usecase {
+        UIDetailedMovie *-- UIGenre
 
-interface RetrieveMoviesUseCase {
-+ invoke()
-}
+        MainActivity -- MovieViewModel
+        MovieViewModel -- UIMovie
+    }
 
-class RetrieveMoviesUseCaseImpl implements RetrieveMoviesUseCase
+    package domain.mapper {
+        interface DataMovieToDomainMovie implements Mapper {
+            + map(DataMovie): DomainMovie
+        }
 
-interface GetNowPlayingMoviesUseCase {
-+ invoke(): Flow<List<DomainNowPlayingMovie>>
-}
+        class DataMovieToDomainMovieImpl implements DataMovieToDomainMovie
+    }
 
-class GetNowPlayingMoviesUseCaseImpl implements GetNowPlayingMoviesUseCase
+    package domain {
 
-interface GetMostPopularMoviesUseCase {
-+ invoke(): Flow<List<DomainMostPopularMovie>>
-}
+        package usecase {
 
-class GetMostPopularMoviesUseCaseImpl implements GetMostPopularMoviesUseCase
+            interface RetrieveMoviesUseCase {
+                + invoke()
+            }
 
-interface GetMovieByIdUseCase {
-+ invoke(String): DomainDetailedMovie
-}
+            class RetrieveMoviesUseCaseImpl implements RetrieveMoviesUseCase
 
-class GetMovieByIdUseCaseImpl implements GetMovieByIdUseCase
+            interface GetNowPlayingMoviesUseCase {
+                + invoke(): Flow<List<DomainNowPlayingMovie>>
+            }
 
-MovieViewModel -- RetrieveMoviesUseCase
-MovieViewModel -- GetNowPlayingMoviesUseCase
-MovieViewModel -- GetMostPopularMoviesUseCase
-MovieViewModel -- GetMovieByIdUseCase
+            class GetNowPlayingMoviesUseCaseImpl implements GetNowPlayingMoviesUseCase
 
-}
+            interface GetMostPopularMoviesUseCase {
+                + invoke(): Flow<List<DomainMostPopularMovie>>
+            }
 
-package repository {
+            class GetMostPopularMoviesUseCaseImpl implements GetMostPopularMoviesUseCase
 
-interface MovieRepository {
-+ retrieveMovies()
-+ getNowPlayingMovies(): Flow<List<DomainNowPlayingMovie>>
-+ getMostPopularMovies(): Flow<List<DomainMostPopularMovie>>
-+ getMovieById(String): DomainDetailedMovie
-}
+            interface GetMovieByIdUseCase {
+                + invoke(String): DomainDetailedMovie
+            }
 
-class MovieRepositoryImpl implements MovieRepository
+            class GetMovieByIdUseCaseImpl implements GetMovieByIdUseCase
 
-MovieRepository -- RetrieveMoviesUseCaseImpl
-MovieRepository -- GetNowPlayingMoviesUseCaseImpl
-MovieRepository -- GetMostPopularMoviesUseCaseImpl
-MovieRepository -- GetMovieByIdUseCaseImpl
+            MovieViewModel -- RetrieveMoviesUseCase
+            MovieViewModel -- GetNowPlayingMoviesUseCase
+            MovieViewModel -- GetMostPopularMoviesUseCase
+            MovieViewModel -- GetMovieByIdUseCase
 
-MovieRepository -R- DomainNowPlayingMovie
-MovieRepository -R- DomainMostPopularMovie
-MovieRepository -R- DomainDetailedMovie
+            DataMovieToDomainMovie -- RetrieveMoviesUseCaseImpl
+            DataMovieToDomainMovie -- GetNowPlayingMoviesUseCaseImpl
+            DataMovieToDomainMovie -- GetMostPopularMoviesUseCaseImpl
+            DataMovieToDomainMovie -- GetMovieByIdUseCaseImpl
+        }
 
-}
+        package repository {
 
-abstract class DomainMovie {
-+ posterImage: String
-}
+            interface MovieRepository {
+                + retrieveMovies()
+                + getNowPlayingMovies(): Flow<List<DomainNowPlayingMovie>>
+                + getMostPopularMovies(): Flow<List<DomainMostPopularMovie>>
+                + getMovieById(String): DomainDetailedMovie
+            }
 
-class DomainNowPlayingMovie extends DomainMovie
+            class MovieRepositoryImpl implements MovieRepository
 
-class DomainMostPopularMovie extends DomainMovie {
-+ title: String
-+ rating: Byte
-+ duration: Int
-+ releaseDate: Date
-}
+            MovieRepository -- RetrieveMoviesUseCaseImpl
+            MovieRepository -- GetNowPlayingMoviesUseCaseImpl
+            MovieRepository -- GetMostPopularMoviesUseCaseImpl
+            MovieRepository -- GetMovieByIdUseCaseImpl
 
-class DomainDetailedMovie extends DomainMostPopularMovie {
-+ overview: String
-+ genres: List<DomainGenre>
-}
+            MovieRepository -R- DomainNowPlayingMovie
+            MovieRepository -R- DomainMostPopularMovie
+            MovieRepository -R- DomainDetailedMovie
+        }
 
-enum DomainGenre {
-Action
-Adventure
-Animation
-Comedy
-Crime
-Documentary
-Drama
-Family
-Fantasy
-History
-Horror
-Music
-Mystery
-Romance
-ScienceFiction
-TVMovie
-Thriller
-War
-Western
-}
+        abstract class DomainMovie {
+            + posterImage: String
+        }
 
-DomainDetailedMovie *-- DomainGenre
+        class DomainNowPlayingMovie extends DomainMovie
 
-package data {
+        class DomainMostPopularMovie extends DomainMovie {
+            + title: String
+            + rating: Byte
+            + duration: Int
+            + releaseDate: Date
+        }
 
-package local {
+        class DomainDetailedMovie extends DomainMostPopularMovie {
+            + overview: String
+            + genres: List<DomainGenre>
+        }
 
-interface MovieLocalDataSource {
-+ getNowPlayingMovies(): Flow<List<DataMovie>>
-+ getMostPopularMovies(): Flow<List<DataMovie>>
-+ getMovieById(String): DataMovie
-}
+        enum DomainGenre {
+            Action
+            Adventure
+            Animation
+            Comedy
+            Crime
+            Documentary
+            Drama
+            Family
+            Fantasy
+            History
+            Horror
+            Music
+            Mystery
+            Romance
+            ScienceFiction
+            TVMovie
+            Thriller
+            War
+            Western
+        }
 
-}
+        DomainDetailedMovie *-- DomainGenre
+    }
 
-package remote {
+    package data {
 
-interface MovieRemoteDataSource {
-+ retrieveMovies()
-+ getMovieById(String): DataMovie
-}
+        package local {
 
-}
+            interface MovieLocalDataSource {
+                + getNowPlayingMovies(): Flow<List<DataMovie>>
+                + getMostPopularMovies(): Flow<List<DataMovie>>
+                + getMovieById(String): DataMovie
+            }
+        }
 
-MovieRepositoryImpl -- MovieLocalDataSource
-MovieRepositoryImpl -- MovieRemoteDataSource
+        package remote {
 
-class DataMovie {
-+ posterImage: String?
-+ title: String?
-+ rating: Byte?
-+ duration: Int?
-+ releaseDate: Date?
-+ overview: String?
-+ genres: List<DataGenre>
-}
+            interface MovieRemoteDataSource {
+                + retrieveMovies()
+                + getMovieById(String): DataMovie
+            }
+        }
 
-class DataGenre {
-+ id: Int
-+ name: String
-}
+        MovieRepositoryImpl -- MovieLocalDataSource
+        MovieRepositoryImpl -- MovieRemoteDataSource
 
-DataMovie *-- DataGenre
-MovieRemoteDataSource -- DataMovie
+        class DataMovie {
+            + posterImage: String?
+            + title: String?
+            + rating: Byte?
+            + duration: Int?
+            + releaseDate: Date?
+            + overview: String?
+            + genres: List<DataGenre>
+        }
 
-}
+        class DataGenre {
+            + id: Int
+            + name: String
+        }
 
+        DataMovie *-- DataGenre
+        MovieRemoteDataSource -- DataMovie
+
+    }
 }
 
 
