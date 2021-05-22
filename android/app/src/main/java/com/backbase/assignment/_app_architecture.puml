@@ -216,7 +216,8 @@ package com.backbase.assignment {
         package remote {
 
             interface MovieRemoteDataSource {
-                + retrieveMovies()
+                + getNowPlayingMovies(): Flow<List<DataMovie>>
+                + getMostPopularMovies(): Flow<List<DataMovie>>
                 + getMovieById(String): DataMovie
             }
         }

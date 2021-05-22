@@ -1,11 +1,11 @@
-package com.backbase.assignment.ui
+package com.backbase.assignment.presentation.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.backbase.assignment.R
-import com.backbase.assignment.ui.movie.MoviesAdapter
+import com.backbase.assignment.presentation.ui.movie.MoviesAdapter
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import java.net.URL
