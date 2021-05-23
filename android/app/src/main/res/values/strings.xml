@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CS Android Assignment</string>
+    <string name="most_popular_movies_subtitle">%s · %s</string>
+    <string name="overview">Overview</string>
 </resources>

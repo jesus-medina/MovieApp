@@ -2,9 +2,12 @@ package com.backbase.assignment.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.backbase.assignment.presentation.UIMovie
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class MovieViewModel : ViewModel() {
+@HiltViewModel
+class MovieViewModel @Inject constructor() : ViewModel() {
     suspend fun retrieveMovies() {
         TODO("retrieveMovies is not implemented yet")
     }
@@ -17,7 +20,7 @@ class MovieViewModel : ViewModel() {
         TODO("getMostPopularMovies is not implemented yet")
     }
 
-    fun getMovieById(id: String): UIMovie.UIDetailedPopularMovie {
+    fun getMovieById(id: String): StateFlow<UIMovie.UIDetailedPopularMovie> {
         TODO("getMovieById is not implemented yet")
     }
 
