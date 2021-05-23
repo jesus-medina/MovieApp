@@ -19,14 +19,12 @@ class RatingView @JvmOverloads constructor(
         color = Color.parseColor("#263238")
     }
 
-    private var yellowRingPaint: Paint = Paint().apply {
-        color = Color.parseColor("#FFEB3B")
+    private var ringPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
     }
 
-    private var yellowRingBackgroundPaint: Paint = Paint().apply {
-        color = Color.parseColor("#30FFEB3B")
+    private var ringBackgroundPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
     }
 
@@ -40,20 +38,24 @@ class RatingView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.run {
+            val ringColor = if (rating >= 50) "4CAF50" else "FFEB3B"
+            ringPaint.color = Color.parseColor("#$ringColor")
+            ringBackgroundPaint.color = Color.parseColor("#30$ringColor")
+
             val middleWidth = (width / 2).toFloat()
             val middleHeight = (height / 2).toFloat()
             drawCircle(middleWidth, middleHeight, middleWidth, backgroundPaint)
 
             val ratingIndicatorWidth = middleWidth * 0.05f
-            yellowRingBackgroundPaint.strokeWidth = ratingIndicatorWidth
+            ringBackgroundPaint.strokeWidth = ratingIndicatorWidth
             drawCircle(
                 middleWidth,
                 middleHeight,
                 middleWidth - ratingIndicatorWidth * 2,
-                yellowRingBackgroundPaint
+                ringBackgroundPaint
             )
 
-            yellowRingPaint.strokeWidth = ratingIndicatorWidth
+            ringPaint.strokeWidth = ratingIndicatorWidth
             drawArc(
                 ratingIndicatorWidth * 2,
                 middleHeight - middleWidth + ratingIndicatorWidth * 2,
@@ -62,7 +64,7 @@ class RatingView @JvmOverloads constructor(
                 -90f,
                 360f / 100 * rating,
                 false,
-                yellowRingPaint
+                ringPaint
             )
 
             val percentageTextSize = middleWidth * 0.25f
