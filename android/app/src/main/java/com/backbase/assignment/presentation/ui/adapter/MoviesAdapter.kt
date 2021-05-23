@@ -10,18 +10,18 @@ import com.backbase.assignment.R
 import com.backbase.assignment.databinding.ItemMovieBinding
 import com.backbase.assignment.presentation.UIMovie
 import java.text.DateFormat
-import java.time.Duration
 
 fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean): View =
     LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
 
 class MoviesAdapter(
-    private val releaseDateFormat: DateFormat
+    private val releaseDateFormat: DateFormat,
+    private val itemClickCallback: (UIMovie.UIMostPopularMovie) -> Unit
 ) : ListAdapter<UIMovie.UIMostPopularMovie, MovieViewHolder>(MoviesDiffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = parent.inflate(R.layout.item_movie, false)
 
-        return MovieViewHolder(view, releaseDateFormat)
+        return MovieViewHolder(view, releaseDateFormat, itemClickCallback)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -30,7 +30,7 @@ class MoviesAdapter(
     }
 }
 
-class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat) :
+class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat, private val itemClickCallback: (UIMovie.UIMostPopularMovie) -> Unit) :
     RecyclerView.ViewHolder(view) {
     private val binding: ItemMovieBinding = ItemMovieBinding.bind(view)
 
@@ -40,6 +40,7 @@ class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat) :
 
     private infix fun ItemMovieBinding.bind(uiMostPopularMovie: UIMovie.UIMostPopularMovie) {
         with(uiMostPopularMovie) {
+            root.setOnClickListener { itemClickCallback(uiMostPopularMovie) }
             posterSimpleDraweeView.setImageURI(posterImage)
             titleTextView.text = title
             subtitleTextView.text = root.context.getString(R.string.most_popular_movies_subtitle).format(releaseDateFormat.format(releaseDate), duration)

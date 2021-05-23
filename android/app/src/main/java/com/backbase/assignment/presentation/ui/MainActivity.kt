@@ -1,13 +1,16 @@
 package com.backbase.assignment.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.backbase.assignment.databinding.ActivityMainBinding
+import com.backbase.assignment.presentation.MovieDetailsActivity
 import com.backbase.assignment.presentation.ui.adapter.MoviesAdapter
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
+import com.backbase.assignment.util.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
@@ -30,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        moviesAdapter = MoviesAdapter(releaseDateFormat)
+        moviesAdapter = MoviesAdapter(releaseDateFormat) {
+            startActivity<MovieDetailsActivity>()
+        }
 
         binding.mostPopularMoviesRecyclerView.apply {
             layoutManager =

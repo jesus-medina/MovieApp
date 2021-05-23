@@ -3,9 +3,11 @@ package com.backbase.assignment.presentation.ui
 import android.content.Context
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.backbase.assignment.R
+import com.backbase.assignment.isDisplayed
 import com.backbase.assignment.endsWithText
 import com.backbase.assignment.startsWithText
 import com.backbase.assignment.matchesWithText
@@ -20,6 +22,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -151,6 +154,23 @@ class MainActivityTest {
             view as RatingView
             assertThat(view.rating, `is`(expectedRating))
         }
+    }
+
+    @Test
+    fun clickOnMostPopularMoviesRecyclerViewAtFirstPositionShouldNavigateToMovieDetailsActivity() {
+        // Given
+        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+            listOf(
+                createUIMostPopularMovie(title = "")
+            )
+        )
+        launchActivity<MainActivity>()
+
+        // When
+        onView(withRecyclerView(R.id.mostPopularMoviesRecyclerView).atPosition(0)).perform(click())
+
+        // Then
+        onView(allOf(withId(R.id.titleTextView), isDescendantOfA(withId(R.id.movieDetailsActivity)))).isDisplayed()
     }
 
     private fun createUIMostPopularMovie(

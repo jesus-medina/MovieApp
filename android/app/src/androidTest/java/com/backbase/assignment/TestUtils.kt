@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.CoreMatchers.endsWith
 import org.hamcrest.CoreMatchers.startsWith
@@ -24,6 +25,8 @@ infix fun ViewInteraction.endsWithText(text: String): ViewInteraction =
 
 infix fun ViewInteraction.matchesWithTextColor(expectedId: Int): ViewInteraction =
     check(matches(withTextColor(expectedId)))
+
+fun ViewInteraction.isDisplayed(): ViewInteraction = check(matches(ViewMatchers.isDisplayed()))
 
 private fun withTextColor(expectedId: Int): Matcher<View?> =
     object : BoundedMatcher<View?, TextView>(TextView::class.java) {
