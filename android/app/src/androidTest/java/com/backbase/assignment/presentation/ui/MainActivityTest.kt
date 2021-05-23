@@ -13,10 +13,13 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.*
+import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.random.Random
 
 @HiltAndroidTest
@@ -51,9 +54,7 @@ class MainActivityTest {
     fun titleTextViewOnMostPopularMoviesRecyclerViewAtFirstPositionShouldMatchesWithExpectedTitleGivenGetMostPopularMoviesOnMovieViewModelReturnsAListOfMostPopularMoviesWithExpectedTitle() {
         // Given
         val expectedTitle = "${Random.nextInt()}"
-        val uiMostPopularMovie: UIMovie.UIMostPopularMovie = mockk {
-            every { title } returns expectedTitle
-        }
+        val uiMostPopularMovie = createUIMostPopularMovie(title = expectedTitle)
         every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
                 uiMostPopularMovie
@@ -71,4 +72,34 @@ class MainActivityTest {
             )
         ).matchesWithText(expectedTitle)
     }
+
+    @Test
+    fun releaseDateTextViewOnMostPopularMoviesRecyclerViewAtFirstPositionShouldMatchesWithExpectedReleaseDateGivenGetMostPopularMoviesOnMovieViewModelReturnsAListOfMostPopularMoviesWithExpectedReleaseDate() {
+        // Given
+        val releaseDate = Date(Random.nextLong())
+        val uiMostPopularMovie = createUIMostPopularMovie(releaseDate = releaseDate)
+        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+            listOf(
+                uiMostPopularMovie
+            )
+        )
+
+        // When
+        launchActivity<MainActivity>()
+
+        // Then
+        val releaseDateFormat = SimpleDateFormat("MMMM d, y")
+        val expectedReleaseDate = releaseDateFormat.format(releaseDate)
+        onView(
+            withRecyclerView(R.id.mostPopularMoviesRecyclerView).atPositionOnView(
+                0,
+                R.id.releaseDateTextView
+            )
+        ).matchesWithText(expectedReleaseDate)
+    }
+
+    private fun createUIMostPopularMovie(
+        title: String = "${Random.nextInt()}",
+        releaseDate: Date = Date(Random.nextLong())
+    ) = UIMovie.UIMostPopularMovie("", "", title, 0, 0, releaseDate)
 }

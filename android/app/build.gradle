@@ -84,4 +84,7 @@ dependencies {
     // coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    // Fresco
+    implementation 'com.facebook.fresco:fresco:2.4.0'
 }

@@ -1,4 +1,4 @@
-package com.backbase.assignment
+package com.backbase.assignment.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
