@@ -20,7 +20,7 @@ class MovieViewModel @Inject constructor() : ViewModel() {
         TODO("getMostPopularMovies is not implemented yet")
     }
 
-    fun getMovieById(id: String): UIMovie.UIDetailedPopularMovie {
+    fun getMovieById(id: String): StateFlow<UIMovie.UIDetailedPopularMovie> {
         TODO("getMovieById is not implemented yet")
     }
 
