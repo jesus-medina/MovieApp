@@ -40,6 +40,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun ActivityMovieDetailsBinding.bindMovieDetails(uiDetailedPopularMovie: UIMovie.UIDetailedPopularMovie) {
         with(uiDetailedPopularMovie) {
+            posterSimpleDraweeView.setImageURI(posterImage)
             titleTextView.text = title
             subtitleTextView.text = getString(R.string.movie_details_subtitle).format(
                 releaseDateFormat.format(releaseDate), genres.formattedGenres(), duration
