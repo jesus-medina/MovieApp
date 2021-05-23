@@ -10,7 +10,7 @@ sealed class UIMovie(val id: String, val posterImage: String) {
         id: String,
         posterImage: String,
         val title: String,
-        val rating: Byte,
+        val rating: Int,
         val duration: Int,
         val releaseDate: Date
     ) : UIMovie(id, posterImage) {
@@ -39,7 +39,7 @@ sealed class UIMovie(val id: String, val posterImage: String) {
         id: String,
         posterImage: String,
         title: String,
-        rating: Byte,
+        rating: Int,
         duration: Int,
         releaseDate: Date,
         val overview: String,
