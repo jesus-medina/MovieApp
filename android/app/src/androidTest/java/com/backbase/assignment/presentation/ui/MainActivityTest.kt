@@ -3,18 +3,21 @@ package com.backbase.assignment.presentation.ui
 import android.content.Context
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.platform.app.InstrumentationRegistry
 import com.backbase.assignment.R
 import com.backbase.assignment.matchesWithText
 import com.backbase.assignment.presentation.UIMovie
+import com.backbase.assignment.presentation.ui.custom.RatingView
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
 import com.backbase.assignment.withRecyclerView
+import com.facebook.drawee.backends.pipeline.Fresco
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.*
-import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +41,8 @@ class MainActivityTest {
     @Before
     fun setUp() {
         hiltRule.inject()
-        context = InstrumentationRegistry.getInstrumentation().context
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+        Fresco.initialize(context)
     }
 
     @Test
@@ -98,8 +102,35 @@ class MainActivityTest {
         ).matchesWithText(expectedReleaseDate)
     }
 
+    @Test
+    fun ratingViewOnMostPopularMoviesRecyclerViewAtFirstPositionShouldMatchesWithExpectedRatingGivenGetMostPopularMoviesOnMovieViewModelReturnsAListOfMostPopularMoviesWithExpectedRating() {
+        // Given
+        val expectedRating = Random.nextInt(0, 100)
+        val uiMostPopularMovie = createUIMostPopularMovie(rating = expectedRating)
+        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+            listOf(
+                uiMostPopularMovie
+            )
+        )
+
+        // When
+        launchActivity<MainActivity>()
+
+        // Then
+        onView(
+            withRecyclerView(R.id.mostPopularMoviesRecyclerView).atPositionOnView(
+                0,
+                R.id.ratingView
+            )
+        ).check { view, _ ->
+            view as RatingView
+            assertThat(view.rating, `is`(expectedRating))
+        }
+    }
+
     private fun createUIMostPopularMovie(
         title: String = "${Random.nextInt()}",
+        rating: Int = Random.nextInt(0, 100),
         releaseDate: Date = Date(Random.nextLong())
-    ) = UIMovie.UIMostPopularMovie("", "", title, 0, 0, releaseDate)
+    ) = UIMovie.UIMostPopularMovie("", "", title, rating, 0, releaseDate)
 }

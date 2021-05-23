@@ -42,6 +42,7 @@ class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat) :
             posterSimpleDraweeView.setImageURI(posterImage)
             titleTextView.text = title
             releaseDateTextView.text = releaseDateFormat.format(releaseDate)
+            ratingView.rating = rating
         }
     }
 
