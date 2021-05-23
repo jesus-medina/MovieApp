@@ -1,43 +1,44 @@
 package com.backbase.assignment.presentation.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.backbase.assignment.R
-import com.backbase.assignment.presentation.ui.movie.MoviesAdapter
-import com.google.gson.JsonArray
-import com.google.gson.JsonParser
-import java.net.URL
+import com.backbase.assignment.databinding.ActivityMainBinding
+import com.backbase.assignment.presentation.ui.adapter.MoviesAdapter
+import com.backbase.assignment.presentation.viewmodel.MovieViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
-    private val baseUrl = "https://api.themoviedb.org/3"
-    private val yourKey = ""
+    private val movieViewModel: MovieViewModel by viewModels()
 
     private lateinit var moviesAdapter: MoviesAdapter
-    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         moviesAdapter = MoviesAdapter()
-        recyclerView.adapter = moviesAdapter
 
-        fetchMovies()
-    }
+        binding.mostPopularMoviesRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = moviesAdapter
+        }
 
-    private fun fetchMovies() {
-        val jsonString =
-            URL("$baseUrl/movie/now_playing?language=en-US&page=undefined&api_key=$yourKey").readText()
-        val jsonObject = JsonParser.parseString(jsonString).asJsonObject
-        moviesAdapter.items = jsonObject["results"] as JsonArray
-        moviesAdapter.notifyDataSetChanged()
+        lifecycleScope.launchWhenCreated {
+            movieViewModel.retrieveMovies()
+            movieViewModel.getMostPopularMovies().collect {
+                moviesAdapter.submitList(it)
+            }
+        }
     }
 }
