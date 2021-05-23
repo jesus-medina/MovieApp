@@ -54,7 +54,7 @@ package com.backbase.assignment {
         class UIMostPopularMovie extends UIMovie {
             + title: String
             + rating: Int
-            + duration: Int
+            + duration: String
             + releaseDate: Date
         }
 
@@ -168,7 +168,7 @@ package com.backbase.assignment {
         class DomainMostPopularMovie extends DomainMovie {
             + title: String
             + rating: Int
-            + duration: Int
+            + duration: Long
             + releaseDate: Date
         }
 
@@ -228,8 +228,8 @@ package com.backbase.assignment {
         class DataMovie {
             + posterImage: String?
             + title: String?
-            + rating: Int?
-            + duration: Int?
+            + rating: Float?
+            + duration: Long?
             + releaseDate: Date?
             + overview: String?
             + genres: List<DataGenre>
