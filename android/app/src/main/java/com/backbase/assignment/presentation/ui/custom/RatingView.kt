@@ -11,6 +11,10 @@ import java.lang.IllegalArgumentException
 class RatingView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+    private var textPaint: Paint = Paint().apply {
+        color = Color.parseColor("#FFFFFF")
+    }
+
     private var backgroundPaint: Paint = Paint().apply {
         color = Color.parseColor("#263238")
     }
@@ -18,6 +22,7 @@ class RatingView @JvmOverloads constructor(
     private var yellowRingPaint: Paint = Paint().apply {
         color = Color.parseColor("#FFEB3B")
         style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
     }
 
     private var yellowRingBackgroundPaint: Paint = Paint().apply {
@@ -49,7 +54,6 @@ class RatingView @JvmOverloads constructor(
             )
 
             yellowRingPaint.strokeWidth = ratingIndicatorWidth
-            yellowRingPaint.strokeCap = Paint.Cap.ROUND
             drawArc(
                 ratingIndicatorWidth * 2,
                 middleHeight - middleWidth + ratingIndicatorWidth * 2,
@@ -59,6 +63,26 @@ class RatingView @JvmOverloads constructor(
                 360f / 100 * rating,
                 false,
                 yellowRingPaint
+            )
+
+            val percentageTextSize = middleWidth * 0.25f
+
+            textPaint.textSize = middleWidth * 0.8f
+            textPaint.textAlign = Paint.Align.RIGHT
+            val textXPosition = middleWidth * when {
+                rating == 100 -> 1.6f
+                rating >= 10 -> 1.4f
+                else -> 1.2f
+            }
+            drawText("$rating", textXPosition, middleHeight + percentageTextSize, textPaint)
+
+            textPaint.textSize = percentageTextSize
+            textPaint.textAlign = Paint.Align.LEFT
+            drawText(
+                "%",
+                textXPosition,
+                middleHeight + percentageTextSize - textPaint.textSize * 1.5f,
+                textPaint
             )
         }
     }
