@@ -64,7 +64,7 @@ class MovieDetailsActivityTest {
         onView(withId(R.id.titleTextView)).matchesWithText(expectedTitle)
     }
 
-    fun createUIDetailedPopularMovie(
+    private fun createUIDetailedPopularMovie(
         title: String = "${Random.nextInt()}"
     ) = UIMovie.UIDetailedPopularMovie("", "", title, 0, "", Date(), "", emptyList())
 }

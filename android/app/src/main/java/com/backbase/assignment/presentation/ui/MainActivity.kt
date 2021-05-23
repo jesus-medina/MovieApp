@@ -31,7 +31,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         moviesAdapter = MoviesAdapter(releaseDateFormat) {
-            startActivity<MovieDetailsActivity>()
+            val options = Bundle().apply {
+                putString("movie_id", it.id)
+            }
+            startActivity<MovieDetailsActivity>(options)
         }
 
         binding.mostPopularMoviesRecyclerView.apply {

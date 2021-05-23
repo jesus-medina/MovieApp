@@ -159,24 +159,37 @@ class MainActivityTest {
     @Test
     fun clickOnMostPopularMoviesRecyclerViewAtFirstPositionShouldNavigateToMovieDetailsActivity() {
         // Given
+        val id = "${Random.nextInt()}"
+        val expectedTitle = "${Random.nextInt()}"
         every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
-                createUIMostPopularMovie(title = "")
+                createUIMostPopularMovie(id)
             )
         )
+        every { movieViewModel.getMovieById(id) } returns MutableStateFlow(createUIDetailedPopularMovie(title = expectedTitle))
         launchActivity<MainActivity>()
 
         // When
         onView(withRecyclerView(R.id.mostPopularMoviesRecyclerView).atPosition(0)).perform(click())
 
         // Then
-        onView(allOf(withId(R.id.titleTextView), isDescendantOfA(withId(R.id.movieDetailsActivity)))).isDisplayed()
+        onView(
+            allOf(
+                withId(R.id.titleTextView),
+                isDescendantOfA(withId(R.id.movieDetailsActivity))
+            )
+        ).matchesWithText(expectedTitle)
     }
 
     private fun createUIMostPopularMovie(
+        id: String = "${Random.nextInt()}",
         title: String = "${Random.nextInt()}",
         rating: Int = Random.nextInt(0, 100),
         duration: String = "${Random.nextInt()}",
         releaseDate: Date = Date(Random.nextLong())
-    ) = UIMovie.UIMostPopularMovie("", "", title, rating, duration, releaseDate)
+    ) = UIMovie.UIMostPopularMovie(id, "", title, rating, duration, releaseDate)
+
+    private fun createUIDetailedPopularMovie(
+        title: String = "${Random.nextInt()}"
+    ) = UIMovie.UIDetailedPopularMovie("", "", title, 0, "", Date(), "", emptyList())
 }
