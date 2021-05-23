@@ -1,5 +1,7 @@
 package com.backbase.assignment.presentation.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.backbase.assignment.databinding.ActivityMainBinding
 import com.backbase.assignment.presentation.ui.adapter.MoviesAdapter
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
-import com.backbase.assignment.util.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
@@ -49,5 +50,14 @@ class MainActivity : AppCompatActivity() {
                 moviesAdapter.submitList(it)
             }
         }
+    }
+
+    private inline fun <reified T : Activity> Activity.startActivity(options: Bundle?) {
+        val startMovieDetailsActivityIntent = Intent(this, T::class.java).apply {
+            options?.let {
+                putExtras(it)
+            }
+        }
+        startActivity(startMovieDetailsActivityIntent)
     }
 }
