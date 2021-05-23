@@ -38,8 +38,11 @@ class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat) :
     }
 
     private infix fun ItemMovieBinding.bind(uiMostPopularMovie: UIMovie.UIMostPopularMovie) {
-        titleTextView.text = uiMostPopularMovie.title
-        releaseDateTextView.text = releaseDateFormat.format(uiMostPopularMovie.releaseDate)
+        with(uiMostPopularMovie) {
+            posterSimpleDraweeView.setImageURI(posterImage)
+            titleTextView.text = title
+            releaseDateTextView.text = releaseDateFormat.format(releaseDate)
+        }
     }
 
 }

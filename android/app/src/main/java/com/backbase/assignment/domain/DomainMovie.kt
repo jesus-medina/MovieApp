@@ -9,7 +9,7 @@ sealed class DomainMovie(posterImage: String) {
     open class DomainMostPopularMovie(
         posterImage: String,
         var title: String,
-        var rating: Byte,
+        var rating: Int,
         var duration: Int,
         var releaseDate: Date
     ) : DomainMovie(posterImage)
@@ -17,7 +17,7 @@ sealed class DomainMovie(posterImage: String) {
     class DomainDetailedPopularMovie(
         posterImage: String,
         title: String,
-        rating: Byte,
+        rating: Int,
         duration: Int,
         releaseDate: Date,
         var overview: String,
