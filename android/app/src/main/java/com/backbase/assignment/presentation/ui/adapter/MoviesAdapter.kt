@@ -10,6 +10,7 @@ import com.backbase.assignment.R
 import com.backbase.assignment.databinding.ItemMovieBinding
 import com.backbase.assignment.presentation.UIMovie
 import java.text.DateFormat
+import java.time.Duration
 
 fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean): View =
     LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
@@ -41,11 +42,10 @@ class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat) :
         with(uiMostPopularMovie) {
             posterSimpleDraweeView.setImageURI(posterImage)
             titleTextView.text = title
-            releaseDateTextView.text = releaseDateFormat.format(releaseDate)
+            subtitleTextView.text = root.context.getString(R.string.most_popular_movies_subtitle).format(releaseDateFormat.format(releaseDate), duration)
             ratingView.rating = rating
         }
     }
-
 }
 
 object MoviesDiffUtilCallback : DiffUtil.ItemCallback<UIMovie.UIMostPopularMovie>() {

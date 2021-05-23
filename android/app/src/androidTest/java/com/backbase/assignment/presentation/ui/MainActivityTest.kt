@@ -6,6 +6,8 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.platform.app.InstrumentationRegistry
 import com.backbase.assignment.R
+import com.backbase.assignment.endsWithText
+import com.backbase.assignment.startsWithText
 import com.backbase.assignment.matchesWithText
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.ui.custom.RatingView
@@ -22,7 +24,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 import kotlin.random.Random
 
 @HiltAndroidTest
@@ -78,7 +80,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun releaseDateTextViewOnMostPopularMoviesRecyclerViewAtFirstPositionShouldMatchesWithExpectedReleaseDateGivenGetMostPopularMoviesOnMovieViewModelReturnsAListOfMostPopularMoviesWithExpectedReleaseDate() {
+    fun subtitleTextViewOnMostPopularMoviesRecyclerViewAtFirstPositionShouldMatchesWithExpectedReleaseDateGivenGetMostPopularMoviesOnMovieViewModelReturnsAListOfMostPopularMoviesWithExpectedReleaseDate() {
         // Given
         val releaseDate = Date(Random.nextLong())
         val uiMostPopularMovie = createUIMostPopularMovie(releaseDate = releaseDate)
@@ -97,9 +99,32 @@ class MainActivityTest {
         onView(
             withRecyclerView(R.id.mostPopularMoviesRecyclerView).atPositionOnView(
                 0,
-                R.id.releaseDateTextView
+                R.id.subtitleTextView
             )
-        ).matchesWithText(expectedReleaseDate)
+        ).startsWithText(expectedReleaseDate)
+    }
+
+    @Test
+    fun subtitleTextViewOnMostPopularMoviesRecyclerViewAtFirstPositionShouldMatchesWithExpectedDurationGivenGetMostPopularMoviesOnMovieViewModelReturnsAListOfMostPopularMoviesWithExpectedDuration() {
+        // Given
+        val expectedDuration = "${Random.nextInt()}"
+        val uiMostPopularMovie = createUIMostPopularMovie(duration = expectedDuration)
+        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+            listOf(
+                uiMostPopularMovie
+            )
+        )
+
+        // When
+        launchActivity<MainActivity>()
+
+        // Then
+        onView(
+            withRecyclerView(R.id.mostPopularMoviesRecyclerView).atPositionOnView(
+                0,
+                R.id.subtitleTextView
+            )
+        ).endsWithText(expectedDuration)
     }
 
     @Test
@@ -131,6 +156,7 @@ class MainActivityTest {
     private fun createUIMostPopularMovie(
         title: String = "${Random.nextInt()}",
         rating: Int = Random.nextInt(0, 100),
+        duration: String = "${Random.nextInt()}",
         releaseDate: Date = Date(Random.nextLong())
-    ) = UIMovie.UIMostPopularMovie("", "", title, rating, 0, releaseDate)
+    ) = UIMovie.UIMostPopularMovie("", "", title, rating, duration, releaseDate)
 }

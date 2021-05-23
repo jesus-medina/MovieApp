@@ -11,7 +11,7 @@ sealed class UIMovie(val id: String, val posterImage: String) {
         posterImage: String,
         val title: String,
         val rating: Int,
-        val duration: Int,
+        val duration: String,
         val releaseDate: Date
     ) : UIMovie(id, posterImage) {
         override fun equals(other: Any?): Boolean {
@@ -29,7 +29,7 @@ sealed class UIMovie(val id: String, val posterImage: String) {
         override fun hashCode(): Int {
             var result = title.hashCode()
             result = 31 * result + rating
-            result = 31 * result + duration
+            result = 31 * result + duration.hashCode()
             result = 31 * result + releaseDate.hashCode()
             return result
         }
@@ -40,7 +40,7 @@ sealed class UIMovie(val id: String, val posterImage: String) {
         posterImage: String,
         title: String,
         rating: Int,
-        duration: Int,
+        duration: String,
         releaseDate: Date,
         val overview: String,
         val genres: List<UIGenre>
