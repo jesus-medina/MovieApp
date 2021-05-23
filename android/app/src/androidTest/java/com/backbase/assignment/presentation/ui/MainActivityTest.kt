@@ -7,7 +7,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.backbase.assignment.R
-import com.backbase.assignment.isDisplayed
 import com.backbase.assignment.endsWithText
 import com.backbase.assignment.startsWithText
 import com.backbase.assignment.matchesWithText
