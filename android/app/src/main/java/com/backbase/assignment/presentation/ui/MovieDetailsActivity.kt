@@ -1,8 +1,8 @@
 package com.backbase.assignment.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.backbase.assignment.R
 import com.backbase.assignment.databinding.ActivityMovieDetailsBinding
@@ -10,7 +10,6 @@ import com.backbase.assignment.presentation.UIGenre
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
 import javax.inject.Inject
 
@@ -33,8 +32,8 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun loadMovieDetailsBy(id: String) {
         lifecycleScope.launchWhenCreated {
-            movieViewModel.getMovieById(id)
-                .collect { binding.bindMovieDetails(it) }
+            val uiDetailedPopularMovie = movieViewModel.getMovieById(id)
+            binding.bindMovieDetails(uiDetailedPopularMovie)
         }
     }
 

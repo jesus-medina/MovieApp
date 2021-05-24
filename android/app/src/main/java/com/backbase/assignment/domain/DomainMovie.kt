@@ -10,7 +10,7 @@ sealed class DomainMovie(posterImage: String) {
         posterImage: String,
         var title: String,
         var rating: Int,
-        var duration: Int,
+        var duration: Long,
         var releaseDate: Date
     ) : DomainMovie(posterImage)
 
@@ -18,7 +18,7 @@ sealed class DomainMovie(posterImage: String) {
         posterImage: String,
         title: String,
         rating: Int,
-        duration: Int,
+        duration: Long,
         releaseDate: Date,
         var overview: String,
         var genres: List<DomainGenre>
