@@ -14,16 +14,15 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 
 
 @ExperimentalCoroutinesApi
-class GetMostPopularMoviesUseCaseImplTest {
+class GetNowPlayingMoviesUseCaseImplTest {
     @RelaxedMockK
     lateinit var movieRepository: MovieRepository
 
     @InjectMockKs
-    lateinit var getMostPopularMoviesUseCaseImpl: GetMostPopularMoviesUseCaseImpl
+    lateinit var getNowPlayingMoviesUseCaseImpl: GetNowPlayingMoviesUseCaseImpl
 
     @Before
     fun setUp() {
@@ -31,27 +30,19 @@ class GetMostPopularMoviesUseCaseImplTest {
     }
 
     @Test
-    fun invokeShouldReturnExpectedListOfDomainMostPopularMoviesGivenGetMostPopularMoviesOnMovieRepositoryReturnsExpectedListOfDomainMostPopularMovies() =
+    fun invokeShouldReturnExpectedListOfDomainNowPlayingMoviesGivenGetNowPlayingMoviesOnMovieRepositoryReturnsExpectedListOfDomainNowPlayingMovies() =
         runBlockingTest {
             // Given
-            val expectedListOfDomainMostPopularMovies =
-                listOf(
-                    DomainMovie.DomainMostPopularMovie(
-                        "posterImage",
-                        "title",
-                        100,
-                        1000,
-                        Date()
-                    )
-                )
-            coEvery { movieRepository.getMostPopularMovies() } returns flowOf(
-                expectedListOfDomainMostPopularMovies
+            val expectedListOfDomainNowPlayingMovies =
+                listOf(DomainMovie.DomainNowPlayingMovie("posterImage"))
+            coEvery { movieRepository.getNowPlayingMovies() } returns flowOf(
+                expectedListOfDomainNowPlayingMovies
             )
 
             // When
-            val result = getMostPopularMoviesUseCaseImpl().first()
+            val result = getNowPlayingMoviesUseCaseImpl().first()
 
             // Then
-            assertThat(result, `is`(expectedListOfDomainMostPopularMovies))
+            assertThat(result, `is`(expectedListOfDomainNowPlayingMovies))
         }
 }
