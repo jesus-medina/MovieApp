@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.backbase.assignment.databinding.ActivityMainBinding
-import com.backbase.assignment.presentation.ui.adapter.MoviesAdapter
+import com.backbase.assignment.presentation.ui.adapter.MostPopularMoviesAdapter
+import com.backbase.assignment.presentation.ui.adapter.NowPlayingMoviesAdapter
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import javax.inject.Inject
 
@@ -21,7 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     private val movieViewModel: MovieViewModel by viewModels()
 
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var mostPopularMostPopularMoviesAdapter: MostPopularMoviesAdapter
+
+    private lateinit var nowPlayingMoviesAdapter: NowPlayingMoviesAdapter
 
     @Inject
     lateinit var releaseDateFormat: DateFormat
@@ -31,24 +35,48 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        moviesAdapter = MoviesAdapter(releaseDateFormat) {
+        with(binding) {
+            initMostPopularMoviesRecyclerView()
+            initNowPlayingMoviesListView()
+        }
+
+        lifecycleScope.launch {
+            movieViewModel.retrieveMovies()
+        }
+        lifecycleScope.launch {
+             movieViewModel.getMostPopularMovies().collect {
+                mostPopularMostPopularMoviesAdapter.submitList(it)
+            }
+        }
+        lifecycleScope.launch {
+            movieViewModel.getNowPlayingMovies().collect {
+                nowPlayingMoviesAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun ActivityMainBinding.initNowPlayingMoviesListView() {
+        nowPlayingMoviesAdapter = NowPlayingMoviesAdapter()
+
+        nowPlayingMoviesRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = nowPlayingMoviesAdapter
+        }
+    }
+
+    private fun ActivityMainBinding.initMostPopularMoviesRecyclerView() {
+        mostPopularMostPopularMoviesAdapter = MostPopularMoviesAdapter(releaseDateFormat) {
             val options = Bundle().apply {
                 putString("movie_id", it.id)
             }
             startActivity<MovieDetailsActivity>(options)
         }
 
-        binding.mostPopularMoviesRecyclerView.apply {
+        mostPopularMoviesRecyclerView.apply {
             layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = moviesAdapter
-        }
-
-        lifecycleScope.launchWhenCreated {
-            movieViewModel.retrieveMovies()
-            movieViewModel.getMostPopularMovies().collect {
-                moviesAdapter.submitList(it)
-            }
+            adapter = mostPopularMostPopularMoviesAdapter
         }
     }
 

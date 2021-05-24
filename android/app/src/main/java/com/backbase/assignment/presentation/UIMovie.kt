@@ -2,9 +2,9 @@ package com.backbase.assignment.presentation
 
 import java.util.*
 
-sealed class UIMovie(val id: String, val posterImage: String) {
+sealed class UIMovie(open val id: String, open val posterImage: String) {
 
-    class UINowPlayingMovie(id: String, posterImage: String) : UIMovie(id, posterImage)
+    data class UINowPlayingMovie(override val id: String, override val posterImage: String) : UIMovie(id, posterImage)
 
     open class UIMostPopularMovie(
         id: String,

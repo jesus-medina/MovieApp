@@ -1,44 +1,41 @@
 package com.backbase.assignment.presentation.ui.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.backbase.assignment.R
-import com.backbase.assignment.databinding.ItemMovieBinding
+import com.backbase.assignment.databinding.ItemMostPopularMovieBinding
 import com.backbase.assignment.presentation.UIMovie
+import com.backbase.assignment.utils.extension.inflate
 import java.text.DateFormat
 
-fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean): View =
-    LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
-
-class MoviesAdapter(
+class MostPopularMoviesAdapter(
     private val releaseDateFormat: DateFormat,
     private val itemClickCallback: (UIMovie.UIMostPopularMovie) -> Unit
-) : ListAdapter<UIMovie.UIMostPopularMovie, MovieViewHolder>(MoviesDiffUtilCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view = parent.inflate(R.layout.item_movie, false)
+) : ListAdapter<UIMovie.UIMostPopularMovie, MostPopularMovieViewHolder>(MoviesDiffUtilCallback) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MostPopularMovieViewHolder {
+        val view = parent.inflate(R.layout.item_most_popular_movie, false)
 
-        return MovieViewHolder(view, releaseDateFormat, itemClickCallback)
+        return MostPopularMovieViewHolder(view, releaseDateFormat, itemClickCallback)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holderMostPopular: MostPopularMovieViewHolder, position: Int) {
         val uiMostPopularMovie = getItem(position)
-        holder bind uiMostPopularMovie
+        holderMostPopular bind uiMostPopularMovie
     }
 }
 
-class MovieViewHolder(view: View, private val releaseDateFormat: DateFormat, private val itemClickCallback: (UIMovie.UIMostPopularMovie) -> Unit) :
+class MostPopularMovieViewHolder(view: View, private val releaseDateFormat: DateFormat, private val itemClickCallback: (UIMovie.UIMostPopularMovie) -> Unit) :
     RecyclerView.ViewHolder(view) {
-    private val binding: ItemMovieBinding = ItemMovieBinding.bind(view)
+    private val binding: ItemMostPopularMovieBinding = ItemMostPopularMovieBinding.bind(view)
 
     infix fun bind(uiMostPopularMovie: UIMovie.UIMostPopularMovie) {
         binding bind uiMostPopularMovie
     }
 
-    private infix fun ItemMovieBinding.bind(uiMostPopularMovie: UIMovie.UIMostPopularMovie) {
+    private infix fun ItemMostPopularMovieBinding.bind(uiMostPopularMovie: UIMovie.UIMostPopularMovie) {
         with(uiMostPopularMovie) {
             root.setOnClickListener { itemClickCallback(uiMostPopularMovie) }
             posterSimpleDraweeView.setImageURI(posterImage)

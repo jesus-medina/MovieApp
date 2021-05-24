@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".presentation.ui.MainActivity">
+
+    <TextView
+        android:id="@+id/nowPlayingMoviesLabelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/now_playing_movies"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nowPlayingMoviesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/nowPlayingMoviesLabelTextView"
+        tools:listitem="@layout/item_now_playing_movie" />
+
+    <TextView
+        android:id="@+id/mostPopularMoviesLabelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/most_popular_movies"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/nowPlayingMoviesRecyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mostPopularMoviesRecyclerView"
-        tools:listitem="@layout/item_movie"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mostPopularMoviesLabelTextView"
+        tools:listitem="@layout/item_most_popular_movie" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

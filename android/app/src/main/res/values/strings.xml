@@ -22,4 +22,6 @@
     <string name="genre_thriller">Thriller</string>
     <string name="genre_war">War</string>
     <string name="genre_western">Western</string>
+    <string name="now_playing_movies">Now playing movies</string>
+    <string name="most_popular_movies">Most popular movies</string>
 </resources>
