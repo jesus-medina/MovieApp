@@ -4,7 +4,7 @@
 
 The app is created with a clean architecture approach. The main layers are Presentation, Domain and Data.
 
-![MovieApp Architecture](./android/app/src/main/java/com/backbase/assignment/_app_architecture.png)
+![MovieApp Architecture](./uml/_app_architecture.svg)
 
 ### Presentation
 
