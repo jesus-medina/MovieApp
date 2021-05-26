@@ -40,10 +40,9 @@ class MovieViewModel @Inject constructor(
             .map(domainMostPopularMoviesToUIMostPopularMovieListMapper::map)
             .stateIn(viewModelScope)
 
-    fun getMovieById(id: String): UIMovie.UIDetailedPopularMovie {
-        val domainDetailedPopularMovie = getMovieByIdUseCase(id)
-
-        return domainDetailedPopularMovieToUIDetailedPopularMovie.map(domainDetailedPopularMovie)
-    }
+    suspend fun getMovieById(id: String): StateFlow<UIMovie.UIDetailedMovie> =
+        getMovieByIdUseCase(id)
+            .map(domainDetailedPopularMovieToUIDetailedPopularMovie::map)
+            .stateIn(viewModelScope)
 
 }

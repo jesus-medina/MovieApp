@@ -15,6 +15,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -68,7 +69,7 @@ class MovieViewModelTest {
         runBlockingTest {
             // Given
             val listOfDomainNowPlayingMoviesInput = listOf(
-                DomainMovie.DomainNowPlayingMovie("posterImage")
+                DomainMovie.DomainNowPlayingMovie("id", "posterImage")
             )
             coEvery { getNowPlayingMoviesUseCase() } returns MutableStateFlow(
                 listOfDomainNowPlayingMoviesInput
@@ -93,7 +94,7 @@ class MovieViewModelTest {
         runBlockingTest {
             // Given
             val listOfDomainMostPopularMoviesInput = listOf(
-                DomainMovie.DomainMostPopularMovie("posterImage", "title", 100, 100, Date())
+                DomainMovie.DomainMostPopularMovie("id", "posterImage", "title", 100, 100, Date())
             )
             coEvery { getMostPopularMoviesUseCase() } returns MutableStateFlow(
                 listOfDomainMostPopularMoviesInput
@@ -122,35 +123,41 @@ class MovieViewModelTest {
         }
 
     @Test
-    fun getMovieByIdShouldReturnExpectedUIDetailedPopularMovieGivenMapOnDomainDetailedPopularMovieToUIDetailedPopularMovieMapperReturnsExpectedUIDetailedPopularMovieFromDomainDetailedPopularMovieAndId() {
-        // Given
-        val id = "${Random.nextInt()}"
-        val domainDetailedPopularMovie = DomainMovie.DomainDetailedPopularMovie(
-            "posterImage",
-            "title",
-            100,
-            1000,
-            Date(),
-            "overview",
-            emptyList()
-        )
-        coEvery { getMovieByIdUseCase(id) } returns domainDetailedPopularMovie
-        val expectedUIDetailedPopularMovie = UIMovie.UIDetailedPopularMovie(
-            "id",
-            "posterImage",
-            "title",
-            100,
-            "duration",
-            Date(),
-            "overview",
-            emptyList()
-        )
-        coEvery { domainDetailedPopularMovieToUIDetailedPopularMovieMapper.map(domainDetailedPopularMovie) } returns expectedUIDetailedPopularMovie
+    fun getMovieByIdShouldReturnExpectedUIDetailedPopularMovieGivenMapOnDomainDetailedPopularMovieToUIDetailedPopularMovieMapperReturnsExpectedUIDetailedPopularMovieFromDomainDetailedPopularMovieAndId() =
+        runBlockingTest {
+            // Given
+            val id = "${Random.nextInt()}"
+            val domainDetailedPopularMovie = DomainMovie.DomainDetailedMovie(
+                "id",
+                "posterImage",
+                "title",
+                100,
+                1000,
+                Date(),
+                "overview",
+                emptyList()
+            )
+            coEvery { getMovieByIdUseCase(id) } returns flowOf(domainDetailedPopularMovie)
+            val expectedUIDetailedPopularMovie = UIMovie.UIDetailedMovie(
+                "id",
+                "posterImage",
+                "title",
+                100,
+                "duration",
+                Date(),
+                "overview",
+                emptyList()
+            )
+            coEvery {
+                domainDetailedPopularMovieToUIDetailedPopularMovieMapper.map(
+                    domainDetailedPopularMovie
+                )
+            } returns expectedUIDetailedPopularMovie
 
-        // When
-        val result = movieViewModel.getMovieById(id)
+            // When
+            val result = movieViewModel.getMovieById(id).value
 
-        // Then
-        assertThat(result, `is`(expectedUIDetailedPopularMovie))
-    }
+            // Then
+            assertThat(result, `is`(expectedUIDetailedPopularMovie))
+        }
 }

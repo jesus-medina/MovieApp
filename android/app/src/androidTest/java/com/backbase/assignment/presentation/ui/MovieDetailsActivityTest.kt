@@ -7,11 +7,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.backbase.assignment.R
-import com.backbase.assignment.containsText
-import com.backbase.assignment.matchesWithText
-import com.backbase.assignment.endsWithText
-import com.backbase.assignment.startsWithText
+import com.backbase.assignment.*
 import com.backbase.assignment.presentation.UIGenre
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.ui.custom.RatingView
@@ -20,14 +16,17 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import kotlin.random.Random
 
 @HiltAndroidTest
@@ -58,7 +57,7 @@ class MovieDetailsActivityTest {
             putExtra("movie_id", movieId)
         }
         val expectedTitle = "${Random.nextInt()}"
-        every { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
+        coEvery { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
             createUIDetailedPopularMovie(
                 title = expectedTitle
             )
@@ -79,7 +78,7 @@ class MovieDetailsActivityTest {
             putExtra("movie_id", movieId)
         }
         val releaseDate = Date(Random.nextLong())
-        every { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
+        coEvery { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
             createUIDetailedPopularMovie(
                 releaseDate = releaseDate
             )
@@ -102,7 +101,7 @@ class MovieDetailsActivityTest {
             putExtra("movie_id", movieId)
         }
         val expectedDuration = "${Random.nextInt()}"
-        every { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
+        coEvery { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
             createUIDetailedPopularMovie(
                 duration = expectedDuration
             )
@@ -143,7 +142,7 @@ class MovieDetailsActivityTest {
             UIGenre.War,
             UIGenre.Western,
         )
-        every { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
+        coEvery { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
             createUIDetailedPopularMovie(
                 genres = genres
             )
@@ -165,7 +164,7 @@ class MovieDetailsActivityTest {
             putExtra("movie_id", movieId)
         }
         val expectedRating = Random.nextInt(0, 100)
-        every { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
+        coEvery { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
             createUIDetailedPopularMovie(
                 rating = expectedRating
             )
@@ -189,7 +188,7 @@ class MovieDetailsActivityTest {
             putExtra("movie_id", movieId)
         }
         val expectedOverview = "${Random.nextInt()}"
-        every { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
+        coEvery { movieViewModel.getMovieById(movieId) } returns MutableStateFlow(
             createUIDetailedPopularMovie(
                 overview = expectedOverview
             )
@@ -229,9 +228,8 @@ class MovieDetailsActivityTest {
             UIGenre.War,
             UIGenre.Western,
         ),
-    ): UIMovie.UIDetailedPopularMovie {
-        return UIMovie.UIDetailedPopularMovie("", "", title, rating, duration, releaseDate, overview, genres)
-    }
+    ): UIMovie.UIDetailedMovie =
+        UIMovie.UIDetailedMovie("", "", title, rating, duration, releaseDate, overview, genres)
 
     private fun List<UIGenre>.formattedGenres(): String = joinToString(", ", transform = {
         context.getString(

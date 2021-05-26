@@ -10,8 +10,10 @@ import com.backbase.assignment.presentation.UIGenre
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class MovieDetailsActivity : AppCompatActivity() {
@@ -20,6 +22,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     private val movieViewModel: MovieViewModel by viewModels()
 
     @Inject
+    @Named("uiReleaseDateFormat")
     lateinit var releaseDateFormat: DateFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +35,13 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun loadMovieDetailsBy(id: String) {
         lifecycleScope.launchWhenCreated {
-            val uiDetailedPopularMovie = movieViewModel.getMovieById(id)
-            binding.bindMovieDetails(uiDetailedPopularMovie)
+            movieViewModel.getMovieById(id)
+                .collect { binding.bindMovieDetails(it) }
         }
     }
 
-    private fun ActivityMovieDetailsBinding.bindMovieDetails(uiDetailedPopularMovie: UIMovie.UIDetailedPopularMovie) {
-        with(uiDetailedPopularMovie) {
+    private fun ActivityMovieDetailsBinding.bindMovieDetails(uiDetailedMovie: UIMovie.UIDetailedMovie) {
+        with(uiDetailedMovie) {
             posterSimpleDraweeView.setImageURI(posterImage)
             titleTextView.text = title
             subtitleTextView.text = getString(R.string.movie_details_subtitle).format(
