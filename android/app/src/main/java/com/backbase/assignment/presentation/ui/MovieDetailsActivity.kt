@@ -74,6 +74,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 UIGenre.Thriller -> R.string.genre_thriller
                 UIGenre.War -> R.string.genre_war
                 UIGenre.Western -> R.string.genre_western
+                UIGenre.Unknown -> R.string.genre_unknown
             }
         )
     })

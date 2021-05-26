@@ -34,6 +34,9 @@ class MainActivityTest {
     @BindValue
     var movieViewModel: MovieViewModel = mockk(relaxed = true) {
         coEvery { retrieveMovies() } just runs
+        coEvery { getNowPlayingMovies() } returns MutableStateFlow(emptyList())
+        coEvery { getMostPopularMovies() } returns MutableStateFlow(emptyList())
+        coEvery { getMovieById("${Random.nextInt()}") } returns MutableStateFlow(mockk(relaxed = true))
     }
 
     lateinit var context: Context

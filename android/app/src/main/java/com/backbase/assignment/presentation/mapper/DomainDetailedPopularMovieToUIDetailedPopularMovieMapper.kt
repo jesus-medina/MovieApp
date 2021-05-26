@@ -54,6 +54,7 @@ class DomainDetailedPopularMovieToUIDetailedPopularMovieMapperImpl @Inject const
         DomainGenre.Thriller -> UIGenre.Thriller
         DomainGenre.War -> UIGenre.War
         DomainGenre.Western -> UIGenre.Western
+        DomainGenre.Unknown -> UIGenre.Unknown
     }
 
     companion object {
