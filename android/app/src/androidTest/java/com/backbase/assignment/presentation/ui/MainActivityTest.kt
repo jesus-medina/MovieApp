@@ -164,7 +164,9 @@ class MainActivityTest {
                 createUIMostPopularMovie(id)
             )
         )
-        coEvery { movieViewModel.getMovieById(id) } returns MutableStateFlow(createUIDetailedPopularMovie(title = expectedTitle))
+        coEvery { movieViewModel.getMovieById(id) } returns MutableStateFlow(
+            createUIDetailedPopularMovie(title = expectedTitle)
+        )
         launchActivity<MainActivity>()
 
         // When
