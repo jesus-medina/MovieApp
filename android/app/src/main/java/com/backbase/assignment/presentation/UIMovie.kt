@@ -35,7 +35,7 @@ sealed class UIMovie(open val id: String, open val posterImage: String) {
         }
     }
 
-    class UIDetailedPopularMovie(
+    class UIDetailedMovie(
         id: String,
         posterImage: String,
         title: String,

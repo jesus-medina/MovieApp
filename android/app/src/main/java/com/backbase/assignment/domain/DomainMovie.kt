@@ -2,25 +2,27 @@ package com.backbase.assignment.domain
 
 import java.util.*
 
-sealed class DomainMovie(posterImage: String) {
+sealed class DomainMovie(val id: String, val posterImage: String) {
 
-    class DomainNowPlayingMovie(posterImage: String) : DomainMovie(posterImage)
+    class DomainNowPlayingMovie(id: String, posterImage: String) : DomainMovie(id, posterImage)
 
     open class DomainMostPopularMovie(
+        id: String,
         posterImage: String,
-        var title: String,
-        var rating: Int,
-        var duration: Int,
-        var releaseDate: Date
-    ) : DomainMovie(posterImage)
+        val title: String,
+        val rating: Int,
+        val duration: Int,
+        val releaseDate: Date
+    ) : DomainMovie(id, posterImage)
 
-    class DomainDetailedPopularMovie(
+    class DomainDetailedMovie(
+        id: String,
         posterImage: String,
         title: String,
         rating: Int,
         duration: Int,
         releaseDate: Date,
-        var overview: String,
-        var genres: List<DomainGenre>
-    ) : DomainMostPopularMovie(posterImage, title, rating, duration, releaseDate)
+        val overview: String,
+        val genres: List<DomainGenre>
+    ) : DomainMostPopularMovie(id, posterImage, title, rating, duration, releaseDate)
 }

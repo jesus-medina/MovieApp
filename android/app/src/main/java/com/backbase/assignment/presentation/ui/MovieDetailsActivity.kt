@@ -1,8 +1,8 @@
 package com.backbase.assignment.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.backbase.assignment.R
 import com.backbase.assignment.databinding.ActivityMovieDetailsBinding
@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.text.DateFormat
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class MovieDetailsActivity : AppCompatActivity() {
@@ -21,6 +22,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     private val movieViewModel: MovieViewModel by viewModels()
 
     @Inject
+    @Named("uiReleaseDateFormat")
     lateinit var releaseDateFormat: DateFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +40,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun ActivityMovieDetailsBinding.bindMovieDetails(uiDetailedPopularMovie: UIMovie.UIDetailedPopularMovie) {
-        with(uiDetailedPopularMovie) {
+    private fun ActivityMovieDetailsBinding.bindMovieDetails(uiDetailedMovie: UIMovie.UIDetailedMovie) {
+        with(uiDetailedMovie) {
             posterSimpleDraweeView.setImageURI(posterImage)
             titleTextView.text = title
             subtitleTextView.text = getString(R.string.movie_details_subtitle).format(
@@ -72,6 +74,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 UIGenre.Thriller -> R.string.genre_thriller
                 UIGenre.War -> R.string.genre_war
                 UIGenre.Western -> R.string.genre_western
+                UIGenre.Unknown -> R.string.genre_unknown
             }
         )
     })
