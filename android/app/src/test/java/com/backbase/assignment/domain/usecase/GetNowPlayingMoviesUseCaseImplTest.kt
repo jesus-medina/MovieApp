@@ -34,7 +34,7 @@ class GetNowPlayingMoviesUseCaseImplTest {
         runBlockingTest {
             // Given
             val expectedListOfDomainNowPlayingMovies =
-                listOf(DomainMovie.DomainNowPlayingMovie("posterImage"))
+                listOf(DomainMovie.DomainNowPlayingMovie("id", "posterImage"))
             coEvery { movieRepository.getNowPlayingMovies() } returns flowOf(
                 expectedListOfDomainNowPlayingMovies
             )

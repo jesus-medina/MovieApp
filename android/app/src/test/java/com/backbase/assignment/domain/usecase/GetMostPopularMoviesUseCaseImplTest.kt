@@ -37,6 +37,7 @@ class GetMostPopularMoviesUseCaseImplTest {
             val expectedListOfDomainMostPopularMovies =
                 listOf(
                     DomainMovie.DomainMostPopularMovie(
+                        "id",
                         "posterImage",
                         "title",
                         100,
