@@ -6,7 +6,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
-import com.backbase.assignment.*
+import com.backbase.assignment.R
+import com.backbase.assignment.endsWithText
+import com.backbase.assignment.startsWithText
+import com.backbase.assignment.matchesWithText
+import com.backbase.assignment.withRecyclerView
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.ui.custom.RatingView
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
