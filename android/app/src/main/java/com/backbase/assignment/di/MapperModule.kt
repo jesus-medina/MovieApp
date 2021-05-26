@@ -1,5 +1,9 @@
 package com.backbase.assignment.di
 
+import com.backbase.assignment.data.local.LocalDataMovie
+import com.backbase.assignment.data.mapper.*
+import com.backbase.assignment.data.remote.RemoteDataDetailedMostPopularMovie
+import com.backbase.assignment.data.remote.RemoteDataDetailedNowPlayingMovie
 import com.backbase.assignment.domain.DomainMovie
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.mapper.DomainDetailedPopularMovieToUIDetailedPopularMovieMapper
@@ -33,4 +37,34 @@ object MapperModule {
         domainDetailedPopularMovieToUIDetailedPopularMovieMapperImpl: DomainDetailedPopularMovieToUIDetailedPopularMovieMapperImpl
     ): DomainDetailedPopularMovieToUIDetailedPopularMovieMapper =
         domainDetailedPopularMovieToUIDetailedPopularMovieMapperImpl
+
+    @Provides
+    fun providesRemoteDataDetailedNowPlayingMovieToMovieListMapper(
+        remoteDataDetailedNowPlayingMovieToLocalDataMovieMapperImpl: RemoteDataDetailedNowPlayingMovieToLocalDataMovieMapperImpl
+    ): ListMapper<RemoteDataDetailedNowPlayingMovie, LocalDataMovie> =
+        ListMapperImpl(remoteDataDetailedNowPlayingMovieToLocalDataMovieMapperImpl)
+
+    @Provides
+    fun providesRemoteDataDetailedMostPopularMovieToMovieListMapper(
+        remoteDataDetailedMostPopularMovieToLocalDataMovieMapperImpl: RemoteDataDetailedMostPopularMovieToLocalDataMovieMapperImpl
+    ): ListMapper<RemoteDataDetailedMostPopularMovie, LocalDataMovie> =
+        ListMapperImpl(remoteDataDetailedMostPopularMovieToLocalDataMovieMapperImpl)
+
+    @Provides
+    fun providesLocalDataMovieToDomainNowPlayingMovieMapper(
+        localDataMovieToDomainNowPlayingMovieImpl: LocalDataMovieToDomainNowPlayingMovieMapperImpl
+    ): ListMapper<LocalDataMovie, DomainMovie.DomainNowPlayingMovie> =
+        ListMapperImpl(localDataMovieToDomainNowPlayingMovieImpl)
+
+    @Provides
+    fun providesLocalDataMovieToDomainMostPopularMovieMapper(
+        localDataMovieToDomainMostPopularMovieImpl: LocalDataMovieToDomainMostPopularMovieMapperImpl
+    ): ListMapper<LocalDataMovie, DomainMovie.DomainMostPopularMovie> =
+        ListMapperImpl(localDataMovieToDomainMostPopularMovieImpl)
+
+    @Provides
+    fun providesLocalDataMovieToDomainDetailedMovieMapper(
+        localDataMovieToDomainDetailedMovieMapperImpl: LocalDataMovieToDomainDetailedMovieMapperImpl
+    ): LocalDataMovieToDomainDetailedMovieMapper =
+        localDataMovieToDomainDetailedMovieMapperImpl
 }
