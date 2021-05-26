@@ -6,14 +6,10 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
-import com.backbase.assignment.R
-import com.backbase.assignment.endsWithText
-import com.backbase.assignment.startsWithText
-import com.backbase.assignment.matchesWithText
+import com.backbase.assignment.*
 import com.backbase.assignment.presentation.UIMovie
 import com.backbase.assignment.presentation.ui.custom.RatingView
 import com.backbase.assignment.presentation.viewmodel.MovieViewModel
-import com.backbase.assignment.withRecyclerView
 import com.facebook.drawee.backends.pipeline.Fresco
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -26,7 +22,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import kotlin.random.Random
 
 @HiltAndroidTest
@@ -63,7 +59,7 @@ class MainActivityTest {
         // Given
         val expectedTitle = "${Random.nextInt()}"
         val uiMostPopularMovie = createUIMostPopularMovie(title = expectedTitle)
-        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+        coEvery { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
                 uiMostPopularMovie
             )
@@ -86,7 +82,7 @@ class MainActivityTest {
         // Given
         val releaseDate = Date(Random.nextLong())
         val uiMostPopularMovie = createUIMostPopularMovie(releaseDate = releaseDate)
-        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+        coEvery { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
                 uiMostPopularMovie
             )
@@ -111,7 +107,7 @@ class MainActivityTest {
         // Given
         val expectedDuration = "${Random.nextInt()}"
         val uiMostPopularMovie = createUIMostPopularMovie(duration = expectedDuration)
-        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+        coEvery { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
                 uiMostPopularMovie
             )
@@ -134,7 +130,7 @@ class MainActivityTest {
         // Given
         val expectedRating = Random.nextInt(0, 100)
         val uiMostPopularMovie = createUIMostPopularMovie(rating = expectedRating)
-        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+        coEvery { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
                 uiMostPopularMovie
             )
@@ -160,12 +156,12 @@ class MainActivityTest {
         // Given
         val id = "${Random.nextInt()}"
         val expectedTitle = "${Random.nextInt()}"
-        every { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
+        coEvery { movieViewModel.getMostPopularMovies() } returns MutableStateFlow(
             listOf(
                 createUIMostPopularMovie(id)
             )
         )
-        every { movieViewModel.getMovieById(id) } returns MutableStateFlow(createUIDetailedPopularMovie(title = expectedTitle))
+        coEvery { movieViewModel.getMovieById(id) } returns MutableStateFlow(createUIDetailedPopularMovie(title = expectedTitle))
         launchActivity<MainActivity>()
 
         // When
@@ -190,5 +186,5 @@ class MainActivityTest {
 
     private fun createUIDetailedPopularMovie(
         title: String = "${Random.nextInt()}"
-    ) = UIMovie.UIDetailedPopularMovie("", "", title, 0, "", Date(), "", emptyList())
+    ) = UIMovie.UIDetailedMovie("", "", title, 0, "", Date(), "", emptyList())
 }
