@@ -20,4 +20,5 @@ sealed class DomainGenre {
     object Thriller : DomainGenre()
     object War : DomainGenre()
     object Western : DomainGenre()
+    object Unknown : DomainGenre()
 }

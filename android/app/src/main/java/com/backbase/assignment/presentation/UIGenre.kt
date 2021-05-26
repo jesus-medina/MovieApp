@@ -20,4 +20,5 @@ sealed class UIGenre {
     object Thriller : UIGenre()
     object War : UIGenre()
     object Western : UIGenre()
+    object Unknown : UIGenre()
 }
