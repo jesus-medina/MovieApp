@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nowPlayingMoviesAdapter: NowPlayingMoviesAdapter
 
     @Inject
+    @Named("uiReleaseDateFormat")
     lateinit var releaseDateFormat: DateFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {
